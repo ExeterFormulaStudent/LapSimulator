@@ -13,3 +13,5 @@ LapSim:
 The LapSim script takes the engine data, track data and various vehicle values to calculate the time taken to complete the lap.
 The LapSim only considers tyre friction, centripetal forces, aerodynamic drag, down forces, mass and efficiency to calculate the lap time.
 The calculation iterates for each track point given from the track data. 
+
+To use this, the LapSim script should be run, and will call the other two scripts when required.
