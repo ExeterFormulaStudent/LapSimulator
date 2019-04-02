@@ -146,11 +146,6 @@ def accelerationRestCalculator(xCoordsReversed, yCoordsReversed, RPMGearVelArr):
 
 
     averageSpd = np.mean(vArr)
-    time = distArr[-1]/averageSpd
-    plt.plot(distArr, vArr, color='red')
-    plt.xlabel('distance/m')
-    plt.ylabel('velocity /ms^-1')
-    #plt.show()
     return distArr, vArr
 
 
@@ -187,14 +182,26 @@ def join(reverseVel, accelDist, accelVel):
 
 
 def lapfunction(dist, vel):
-    lapNumber = int(input('Number of laps'))  # input number
+
+    boolean = True  # boolean for error catch
+
+    while boolean:  # while loop for error catch
+        try:
+            lapNumber = int(input('Number of laps'))  # input number
+            if lapNumber <= 0:  # used to check if lapNumber is positive
+                print('Number of laps must be a positive integer.')
+            else:  # exits while loop if satisfied
+                boolean = False
+        except ValueError:  # ValueError raised
+            print('Number of laps must be a positive integer.')
+
     distArr = np.array(dist)
     velArr = np.array(vel)
     if lapNumber == 1:  # if only a single lap
         plt.plot(distArr, velArr)
         plt.show()
         return distArr, velArr
-    elif lapNumber > 1:  # if lap is greater than one append more laps to the existing array - using the latest value of
+    else:  # if lap is greater than one append more laps to the existing array - using the latest value of
         # velocity for the initial velocity of each lap
         lapOneTime = distArr[-1]/np.mean(velArr)
         print('lap time for lap 1          : ', '{:.4f}'.format(lapOneTime), 'seconds')
@@ -209,21 +216,18 @@ def lapfunction(dist, vel):
 
             distArr = np.append(distArr, dist)
             velArr = np.append(velArr, calculatedArray[0])
-            if n+2 > 9:
+            if 9 < n+2 < 100:  # if loop for formatting depending on number of figures in the lap number
                 print('lap time for lap', n+2, '        : ', '{:.6f}'.format(lapTime), 'seconds')
-            else:
+            elif n+2 < 10:
                 print('lap time for lap', n+2, '         : ', '{:.6f}'.format(lapTime), 'seconds')
-    else:  # error catch if not a positive integer
-        print('please enter a positive integer')
+            else:
+                print('lap time for lap', n+2, '       : ', '{:.6f}'.format(lapTime), 'seconds')
     aveSpd = np.mean(velArr)  # find average speed of vehicle
     totaldist = distArr[-1]  # obtain the total distance covered
     time = totaldist/aveSpd  # calculate time
     print('Average Velocity of all laps: ', '{:.6f}'.format(aveSpd), 'metres per second',
           '({:.6f}'.format(aveSpd*2.23694), 'mph)')
     print('Total Distance of all laps  : ', '{:.6f}'.format(totaldist), 'metres')
-
-    plt.plot(distArr, velArr)
-    plt.show()
     return distArr, velArr
 
 
@@ -244,26 +248,30 @@ if __name__ == '__main__':
 
     engineResults = Engine.enginePerformance(Engine.PowerCurve()[0], Engine.PowerCurve()[1], Engine.PowerCurve()[2],
                                              finalDriveRatio, wheelDiameter)
-    fig, ax1 = plt.subplots()  # plot engine results (Power, RPM and Torque against velocity)
+    fig, ax1 = plt.subplots(figsize=(10, 5))  # plot engine results (Power, RPM and Torque against velocity)
 
-    ax1.set_xlabel('Velocity /ms^-1')
-    ax1.set_ylabel('Power/bhp')
-    plt.plot(engineResults[:, 2], engineResults[:, 0], color='tab:red')
-
+    ax1.set_xlabel('Velocity [m/s]')
+    ax1.set_ylabel('Power [bhp]')
+    plt.plot(engineResults[:, 2], engineResults[:, 0], color='tab:red',label='Power')
+    plt.legend(loc='lower right')
     ax2 = ax1.twinx()
-    ax2.set_ylabel('RPM /RPM')
-    plt.plot(engineResults[:, 2], engineResults[:, 1], color='tab:blue')
+    ax2.set_ylabel('RPM [RPM]', color='tab:blue')
+    plt.plot(engineResults[:, 2], engineResults[:, 1], color='tab:blue', label='RPM')
     ax2.tick_params(axis='y', labelcolor='tab:blue')
+    plt.title('Engine Power and Engine RPM against Vehicle Velocity')
+    plt.legend(loc='upper left')
     plt.show()
 
     plt.plot(engineResults[:, 2], engineResults[:, 3], color='tab:green')
     plt.title('Engine Torque against Vehicle Velocity')
-    plt.xlabel('Vehicle Velocity /ms^-1')
+    plt.ylabel('Torque [Nm]')
+    plt.xlabel('Vehicle Velocity [m/s]')
     plt.show()
 
     coordinates = Track.coordinateImport()  # plot track coordinates
     plt.plot(coordinates[0], coordinates[1])
     plt.xlabel('x')
+    plt.axis('equal')
     plt.ylabel('y')
     plt.title('Track')
     plt.show()
@@ -280,7 +288,7 @@ if __name__ == '__main__':
     print('Total Race Time             : ', '{:.6f}'.format(time), 'seconds')
 
     plt.plot(totaldistandvel[0], totaldistandvel[1])
-    plt.title('lap simulator total')
-    plt.xlabel('distance /m')
-    plt.ylabel('velocity /ms^-1')
+    plt.title('Lap Simulator Total Distance against Velocity')
+    plt.xlabel('Distance [m]')
+    plt.ylabel('Velocity [m/s]')
     plt.show()
