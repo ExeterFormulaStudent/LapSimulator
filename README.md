@@ -16,5 +16,6 @@ The calculation iterates for each track point given from the track data.
 
 To use this, the LapSim script should be run, and will call the other two scripts when required.
 
+Below is the Binder Link:
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Milesc62/LapSim/master?filepath=https%3A%2F%2Fgithub.com%2FMilesc62%2FLapSim%2Fblob%2Fmaster%2FFormulaStudentLapSimulator.ipynb)
