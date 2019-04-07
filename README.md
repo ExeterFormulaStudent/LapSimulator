@@ -1,5 +1,11 @@
 # LapSim
-Vehicle Lap Simulator using three scripts: LapSim, Engine and Track. 
+This folder is used for the lap simulator. The .ipynb file is the Jupyter Notebook version of the simulator,
+with variable parameters to input. 
+It can be implemented through the use of the binder link below:
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Milesc62/LapSim/master)
+
+The Python version of the Vehicle Lap Simulator uses three scripts: LapSim, Engine and Track. 
+
 Track:
 The track script reads the track file coordinates and creates an x and y arrays of the coordinates in reverse.
 
@@ -14,7 +20,4 @@ The LapSim script takes the engine data, track data and various vehicle values t
 The LapSim only considers tyre friction, centripetal forces, aerodynamic drag, down forces, mass and efficiency to calculate the lap time.
 The calculation iterates for each track point given from the track data. 
 
-To use this, the LapSim script should be run, and will call the other two scripts when required.
-
-Below is the Binder Link:
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Milesc62/LapSim/master)
+To use this, the LapSim script should be run, and will call the other two scripts when required
