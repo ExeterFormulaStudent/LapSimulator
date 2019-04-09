@@ -21,13 +21,14 @@ def vehicleValues():
            liftArea, liftCoefficient, finalDriveRatio, wheelDiameter
 
 
-def maxCornerVel(tyreFrictionCoeff, normalForce, mass, effectiveRadius, airDen, Area, cd):
+def maxCornerVel(tyreFrictionCoeff, normalForce, mass, effectiveRadius, airDen, Area, cd, rollingResistanceCoefficient,g):
     '''
     The maxCornerVel function takes inputs of the tyre friction coefficient, the normal Force acting on the vehicle,
     the mass of the vehicle, the effective radius, the air density, the frontal area and the drag coefficient. The
     function returns a value of velocity which represents the maximum the vehicle can navigate the corner.
     '''
-    vel = (((tyreFrictionCoeff*normalForce)**2)/(mass/(float(effectiveRadius)**2)+(0.5*airDen*Area*cd)**2))**0.25
+    vel = (((tyreFrictionCoeff*normalForce)**2)/(mass/(float(effectiveRadius)**2)+(mass*g*rollingResistanceCoefficient)**2+(0.5*airDen*Area*cd)**2))**0.25
+
     return vel
 
 
@@ -94,7 +95,7 @@ def calculator(xCoords, yCoords, RPMGearVelArr, initialVel):
             # assumed the vehicle will travel at the maximum possible velocity
             float(effectiveRadiusArr[i])
             corner = maxCornerVel(tyreFrictionCoefficient, normalForce(mass, g, airDensity, liftCoefficient,
-                                liftArea, u), mass, effectiveRadiusArr[i], airDensity, frontalArea, dragCoefficient)
+                                liftArea, u), mass, effectiveRadiusArr[i], airDensity, frontalArea, dragCoefficient,rollingResistanceCoefficient,g)
             if v > corner:
                 v = corner
         vArr = np.append(vArr, v)
@@ -140,7 +141,7 @@ def accelerationRestCalculator(xCoordsReversed, yCoordsReversed, RPMGearVelArr):
             # assumed the vehicle will travel at the maximum possible velocity
             float(effectiveRadiusArr[i])
             corner = maxCornerVel(tyreFrictionCoefficient, normalForce(mass, g, airDensity, liftCoefficient,
-                                liftArea, u), mass, effectiveRadiusArr[i], airDensity, frontalArea, dragCoefficient)
+                                liftArea, u), mass, effectiveRadiusArr[i], airDensity, frontalArea, dragCoefficient,rollingResistanceCoefficient,g)
             if v > corner:
                 v = corner
 
